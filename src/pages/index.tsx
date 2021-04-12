@@ -9,11 +9,17 @@ import HomeLayout from "@/components/HomeLayout";
 import PromotionCard from "@/components/PromotionCard";
 import VerticalCard from "@/components/VerticalCard";
 
+import mercado from "@/pages/api/mercadopago";
+import { useEffect } from "react";
+
 interface HomeProps {
   recommendedProducts: Document[];
 }
 
 export default function Home({ recommendedProducts }: HomeProps) {
+  useEffect(() => {
+    mercado();
+  }, []);
   return (
     <Layout title="NOVIDADES">
       <SEO

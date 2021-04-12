@@ -10,6 +10,8 @@ interface ISubTotalProps {
 }
 
 export default function SubTotal({ value }: ISubTotalProps) {
+  // Configura credenciais
+
   return (
     <Container>
       <span>SUBTOTAL</span>
@@ -23,6 +25,10 @@ export default function SubTotal({ value }: ISubTotalProps) {
           />
         </a>
       </Link>
+      <script
+        src="https://www.mercadopago.com.br/integrations/v1/web-payment-checkout.js"
+        data-preference-id="TEST-c416bc36-7eda-4a67-9d1b-5830017d40fa"
+      ></script>
     </Container>
   );
 }
