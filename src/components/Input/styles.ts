@@ -66,7 +66,7 @@ export const Container = styled.div<IContainerProps>`
       background-color: inherit;
 
       width: 100%;
-      height: 18px;
+      height: 100%;
 
       ::placeholder {
         font-size: 16px;
