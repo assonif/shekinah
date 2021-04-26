@@ -34,7 +34,7 @@ export const Container = styled.div<IContainerProps>`
     align-items: center;
     justify-content: space-between;
 
-    padding: 12px;
+    padding-left: 12px;
 
     width: 100%;
     height: 2.75rem;
