@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Colors from "@/styles/Colors";
 import Button from "../Button";
 
@@ -13,6 +14,7 @@ import { useEffect, useState } from "react";
 
 interface ICartItemProps {
   id: number;
+  slug: string;
   title: string;
   quantity: number;
   price: string;
@@ -33,6 +35,7 @@ export default function CartItem({
   removeAction,
   updateAction,
   maxQuantity,
+  slug,
 }: ICartItemProps) {
   const [quantityInput, setQuantityInput] = useState(0);
 
@@ -51,7 +54,11 @@ export default function CartItem({
       <img src={cover_photo} alt="" />
       <InfoContainer>
         <ProductContainer>
-          <strong>{title}</strong>
+          <Link href={`/catalog/products/${slug}`}>
+            <a>
+              <strong>{title}</strong>
+            </a>
+          </Link>
           <span>Tamanho: {size}</span>
           <span>Vendido e enviado por Shekinah Skate Shop</span>
           <b>R$ {price}</b>

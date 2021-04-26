@@ -1,6 +1,8 @@
 import { createGlobalStyle } from "styled-components";
 import color from "./Colors";
 
+import "react-toastify/dist/ReactToastify.css";
+
 export default createGlobalStyle`
 * {
     margin: 0;
@@ -8,6 +10,8 @@ export default createGlobalStyle`
     box-sizing: border-box;
 
     text-decoration: none;
+
+    -webkit-tap-highlight-color: transparent;
 }
 
 body {

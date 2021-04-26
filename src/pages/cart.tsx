@@ -1,21 +1,27 @@
+import { useContext, useEffect } from "react";
+
 import CartItem from "@/components/CartItem";
 import Layout from "@/components/Layout";
 import SEO from "@/components/SEO";
 import SubTotal from "@/components/SubTotal";
 import Shipping from "@/components/Shipping";
 
-import { useRecoilState, useRecoilValue } from "recoil";
-import { cartState } from "@/atoms";
-import { totalState } from "@/atoms/selectors";
+import axios from "axios";
+
+import { observer } from "mobx-react";
+
+import { cartStore } from "@/stores/cart";
+import { orderStore } from "@/stores/order";
 
 import { Container } from "@/styles/pages/Cart";
+const Cart = observer(() => {
+  const cartContext = useContext(cartStore);
+  const orderContext = useContext(orderStore);
 
-export default function Cart() {
-  const [cart, setCart] = useRecoilState(cartState);
-  const totals = useRecoilValue(totalState);
+  useEffect(() => {}, []);
 
   const updateAction = (id, value) => {
-    const copy = [...cart];
+    const copy = [...cartContext.cart];
     let index;
     let copyItem;
 
@@ -28,7 +34,7 @@ export default function Cart() {
 
     if (value <= 0) {
       copyItem = { ...copyItem, quantity: 1 };
-      setCart(copy);
+      cartContext.setCart(copy);
       return;
     } else {
       let newQuantity = value;
@@ -44,22 +50,22 @@ export default function Cart() {
 
     copy.splice(index, 0, copyItem);
 
-    setCart(copy);
+    cartContext.setCart(copy);
     localStorage.setItem("cart", JSON.stringify(copy));
   };
 
-  const removeAction = (id) => {
-    const copy = [...cart];
+  const removeAction = (id, size) => {
+    const copy = [...cartContext.cart];
     let index;
     copy.forEach((item, i) => {
-      if (item.id === id) {
+      if (item.id === id && item.size === size) {
         index = i;
       }
     });
 
     copy.splice(index, 1);
 
-    setCart(copy);
+    cartContext.setCart(copy);
     localStorage.setItem("cart", JSON.stringify(copy));
   };
 
@@ -68,7 +74,7 @@ export default function Cart() {
       <SEO title="Carrinho" />
       <Container>
         <ul>
-          {cart.map((item) => (
+          {cartContext.cart.map((item) => (
             <CartItem
               key={item.id}
               id={item.id}
@@ -78,17 +84,20 @@ export default function Cart() {
               price={item.price}
               quantity={item.quantity}
               maxQuantity={item.maxQuantity}
-              removeAction={() => removeAction(item.id)}
+              removeAction={() => removeAction(item.id, item.size)}
               updateAction={(id, value) => updateAction(id, value)}
+              slug={item.slug}
             />
           ))}
         </ul>
 
         <div>
-          <SubTotal value={totals.subtotal} />
+          <SubTotal value={orderContext.subtotal} />
           <Shipping />
         </div>
       </Container>
     </Layout>
   );
-}
+});
+
+export default Cart;

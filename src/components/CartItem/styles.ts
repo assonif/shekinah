@@ -29,6 +29,11 @@ export const ProductContainer = styled.div`
 
   font-size: 0.8rem;
 
+  a {
+    text-decoration: none;
+    color: ${Colors.neutral_color_09};
+  }
+
   > span {
     color: ${Colors.neutral_color_06};
     margin-top: 0.3rem;

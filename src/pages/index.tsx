@@ -10,12 +10,20 @@ import PromotionCard from "@/components/PromotionCard";
 import VerticalCard from "@/components/VerticalCard";
 
 import { useEffect } from "react";
+import { db } from "@/config/firebase";
 
 interface HomeProps {
   recommendedProducts: Document[];
 }
 
 export default function Home({ recommendedProducts }: HomeProps) {
+  const add = () => {
+    db.collection("users").add({
+      first: "Ada",
+      last: "Lovelace",
+      born: 1815,
+    });
+  };
   return (
     <Layout title="NOVIDADES">
       <SEO

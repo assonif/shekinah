@@ -22,7 +22,7 @@ export const Container = styled.div<IContainerProps>`
     align-items: end;
 
     position: absolute;
-    transform: translate(6px, 42px) scale(1);
+    transform: translate(6px, 44px) scale(1);
 
     font-weight: 600;
     font-size: 0.8rem;
@@ -37,7 +37,7 @@ export const Container = styled.div<IContainerProps>`
     padding: 12px;
 
     width: 100%;
-    height: 2.5rem;
+    height: 2.75rem;
 
     position: relative;
 

@@ -1,21 +1,23 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import Link from "next/link";
 
 import { FiUser, FiShoppingCart } from "react-icons/fi";
 
-import { cartState } from "@/atoms";
+import { observer } from "mobx-react";
+
 import { useRecoilState } from "recoil";
 
 import SearchBar from "./SearchBar";
 
 import { Container, ActionsMenu } from "@/styles/components/Header";
+import { cartStore } from "@/stores/cart";
 
-export default function Header() {
-  const [cart, setCart] = useRecoilState(cartState);
+const Header = observer(() => {
+  const cartContext = useContext(cartStore);
 
   useEffect(() => {
     var storedArray = localStorage.getItem("cart");
-    setCart(JSON.parse(storedArray));
+    cartContext.setCart(JSON.parse(storedArray));
   }, []);
 
   return (
@@ -35,7 +37,9 @@ export default function Header() {
               <div>
                 <span>
                   <FiShoppingCart />
-                  {cart && cart.length > 0 && <label>{cart.length}</label>}
+                  {cartContext.cart && cartContext.cart.length > 0 && (
+                    <label>{cartContext.cart.length}</label>
+                  )}
                 </span>
               </div>
             </a>
@@ -45,4 +49,6 @@ export default function Header() {
       <SearchBar />
     </Container>
   );
-}
+});
+
+export default Header;

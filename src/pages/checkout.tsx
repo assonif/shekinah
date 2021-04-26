@@ -1,50 +1,62 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import CheckoutSteps from "@/components/CheckoutSteps";
 import SEO from "@/components/SEO";
 import InfoAddress from "@/components/InfoAddress";
 
-import { useRecoilState, useRecoilValue } from "recoil";
-import { cartState, addressState, creditCardState, methodState } from "@/atoms";
-import { totalState } from "@/atoms/selectors";
+import { orderStore } from "@/stores/order";
+import { cartStore } from "@/stores/cart";
 
 import { Container } from "@/styles/pages/Checkout";
 import CardDetails from "@/components/CardDetails";
 import PaymentMethod from "@/components/PaymentMethod";
 import SummaryCheckout from "@/components/SummaryCheckout";
+import { observer } from "mobx-react";
 
 interface IProduct {
   title: string;
   price: string;
 }
 
-export default function checkout() {
+const checkout = observer(() => {
   const [checkoutStep, setCheckoutStep] = useState(0);
   const [itemsDetails, setItemDetails] = useState<Array<IProduct>>();
 
-  const cart = useRecoilValue(cartState);
-  const method = useRecoilValue(methodState);
-  const totals = useRecoilValue(totalState);
-  const [address, setAddress] = useRecoilState(addressState);
-  const [creditCard, setCreditCard] = useRecoilState(creditCardState);
-  const [bankSlip, setBankSlip] = useRecoilState(creditCardState);
+  const orderContext = useContext(orderStore);
+  const cartContext = useContext(cartStore);
 
   const handleSetAddress = (name, value) => {
-    setAddress({ ...address, [name]: value });
+    orderContext.setAddress({
+      ...orderContext.receiver_address,
+      [name]: value,
+    });
   };
 
-  const handleSetCard = (name, value) => {
-    setCreditCard({ ...creditCard, [name]: value });
+  const handleSetPayer = (name, value) => {
+    if (name === "cpf") {
+      orderContext.setPayerCPF(value);
+    } else if (name === "phone") {
+      orderContext.setPayerPhone(value);
+    } else {
+      orderContext.setPayer({
+        ...orderContext.payer,
+        [name]: value,
+      });
+    }
   };
 
-  const handleSetBankSlip = (name, value) => {
-    setBankSlip({ ...bankSlip, [name]: value });
-  };
+  // const handleSetCard = (name, value) => {
+  //   setCreditCard({ ...creditCard, [name]: value });
+  // };
+
+  // const handleSetBankSlip = (name, value) => {
+  //   setBankSlip({ ...bankSlip, [name]: value });
+  // };
 
   useEffect(() => {
     const filtered: Array<IProduct> = [];
 
-    cart.forEach((item) => {
+    cartContext.cart.forEach((item) => {
       for (let i = 0; i < item.quantity; i++) {
         filtered.push({ title: item.title, price: item.price });
       }
@@ -56,20 +68,18 @@ export default function checkout() {
   return (
     <>
       <SEO title="Carrinho" />
-      <CardDetails total={totals.total} items={itemsDetails} />
+      {/* <CardDetails total={totals.total} items={itemsDetails} /> */}
       <Container>
-        <CheckoutSteps
-          checkoutStep={checkoutStep}
-          setCheckoutStep={setCheckoutStep}
-        />
         {checkoutStep === 0 && (
           <InfoAddress
             setAddress={(name, value) => handleSetAddress(name, value)}
+            setPayer={(name, value) => handleSetPayer(name, value)}
             setCheckoutStep={setCheckoutStep}
-            address={address}
+            address={orderContext.receiver_address}
+            payer={orderContext.payer}
           />
         )}
-        {checkoutStep === 1 && (
+        {/* {checkoutStep === 1 && (
           <PaymentMethod
             setCreditCard={(name, value) => handleSetCard(name, value)}
             creditCard={creditCard}
@@ -87,8 +97,10 @@ export default function checkout() {
               data: method === "creditCard" ? creditCard : bankSlip,
             }}
           />
-        )}
+        )} */}
       </Container>
     </>
   );
-}
+});
+
+export default checkout;

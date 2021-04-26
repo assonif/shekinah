@@ -1,7 +1,5 @@
 import { atom } from "recoil";
 
-export const cartState = atom({ key: "cartAtom", default: [] });
-
 export const shippingState = atom({ key: "shippingAtom", default: 0 });
 
 export const addressState = atom({ key: "addressAtom", default: {} });

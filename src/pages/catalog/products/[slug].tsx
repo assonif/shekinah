@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 
@@ -7,11 +7,11 @@ import SEO from "@/components/SEO";
 import Button from "@/components/Button";
 import LoadingPage from "@/components/LoadingPage";
 
-import { useRecoilState, useRecoilValue } from "recoil";
-import { cartState } from "@/atoms";
+import { observer } from "mobx-react";
 
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+
+import { cartStore } from "@/stores/cart";
 
 import {
   Container,
@@ -34,205 +34,226 @@ interface ProductProps {
   brand: string;
   price: string;
   sale_price: string;
-  sizes: string[];
+  items: any[];
   category_id: string;
   slug: string;
   quantity: number;
   description: string;
 }
 
-const Product = ({
-  id,
-  title,
-  category_id,
-  sizes,
-  brand,
-  cover_photo,
-  photos,
-  price,
-  sale_price,
-  slug,
-  quantity,
-  description,
-}: ProductProps) => {
-  const router = useRouter();
+const Product = observer(
+  ({
+    id,
+    title,
+    category_id,
+    items,
+    brand,
+    cover_photo,
+    photos,
+    price,
+    sale_price,
+    slug,
+    quantity,
+    description,
+  }: ProductProps) => {
+    const router = useRouter();
 
-  const [selected, setSelected] = useState(1);
-  const [photo, setPhoto] = useState(cover_photo);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [selectedSize, setSelectedSize] = useState("");
-  const [hasError, setHasError] = useState(false);
+    const cartContext = useContext(cartStore);
 
-  const [cart, setCart] = useRecoilState(cartState);
+    const [selected, setSelected] = useState(1);
+    const [photo, setPhoto] = useState(cover_photo);
+    const [errorMessage, setErrorMessage] = useState("");
+    const [selectedSize, setSelectedSize] = useState("");
+    const [maxQuantity, setMaxQuantity] = useState(0);
+    const [hasError, setHasError] = useState(false);
 
-  if (router.isFallback) {
-    return <LoadingPage />;
-  }
-
-  const notify = (value) =>
-    toast.success(value, {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-
-  const checkQuantity = (value) => {
-    if (value > quantity) {
-      return false;
+    if (router.isFallback) {
+      return <LoadingPage />;
     }
-    return true;
-  };
 
-  const updateValue = () => {
-    const copy = [...cart];
-    let index;
-    let copyItem;
+    useEffect(() => {
+      console.log(quantity);
+    }, [quantity]);
 
-    copy.forEach((item, i) => {
-      if (item.id === id) {
-        index = i;
-        copyItem = item;
+    const notify = (value) =>
+      toast.success(value, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+
+    const checkQuantity = (value) => {
+      console.log(value, quantity);
+      if (value > maxQuantity) {
+        return false;
       }
-    });
+      return true;
+    };
 
-    if (!checkQuantity(copyItem.quantity + 1)) {
-      setHasError(true);
-      setErrorMessage("VOCÊ JÁ ADICIONOU TODO NOSSO ESTOQUE EM SEU CARRINHO");
-      return;
-    }
+    const updateValue = () => {
+      const copy = [...cartContext.cart];
+      let index;
+      let copyItem;
 
-    copyItem = { ...copyItem, quantity: copyItem.quantity + 1 };
+      copy.forEach((item, i) => {
+        if (item.id === id) {
+          index = i;
+          copyItem = item;
+        }
+      });
 
-    copy.splice(index, 1);
-
-    copy.splice(index, 0, copyItem);
-
-    setCart(copy);
-
-    localStorage.setItem("cart", JSON.stringify(copy));
-
-    notify("Produto atualizado no carrinho!");
-  };
-
-  const handleBuy = () => {
-    if (!selectedSize || selectedSize === "") {
-      setHasError(true);
-      setErrorMessage("POR FAVOR, SELECIONE UM TAMANHO.");
-      return;
-    }
-    let existsInCart = false;
-    let currentQuantity = 1;
-
-    cart.map((item) => {
-      if (item.id === id) {
-        updateValue();
-
-        existsInCart = true;
+      console.log(copyItem);
+      if (!checkQuantity(copyItem.quantity + 1)) {
+        setHasError(true);
+        setErrorMessage("VOCÊ JÁ ADICIONOU TODO NOSSO ESTOQUE EM SEU CARRINHO");
+        return;
       }
-    });
 
-    if (!existsInCart) {
-      const copy = [
-        ...cart,
-        {
-          id,
-          title,
-          price: sale_price || price,
-          cover_photo,
-          quantity: currentQuantity,
-          size: selectedSize,
-          maxQuantity: quantity,
-        },
-      ];
-      setCart(copy);
+      copyItem = { ...copyItem, quantity: copyItem.quantity + 1 };
+
+      copy.splice(index, 1);
+
+      copy.splice(index, 0, copyItem);
+
+      cartContext.setCart(copy);
+
       localStorage.setItem("cart", JSON.stringify(copy));
-      notify("Produto adicionado ao carrinho!");
-    }
-  };
 
-  const setAttributes = (value) => {
-    setSelected(value);
-    if (value > 0) {
-      setPhoto(value === 1 ? cover_photo : photos[value - 2]);
-    }
-  };
+      notify("Produto atualizado no carrinho!");
+    };
 
-  const setSize = (value) => {
-    setSelectedSize(value.toUpperCase());
-    setHasError(false);
-  };
+    useEffect(() => {
+      setPhoto(cover_photo);
+    }, [cover_photo]);
 
-  return (
-    <Layout>
-      <SEO title={title} />
-      <ToastContainer />
-      <Container>
-        <div>
-          <PhotoContainer>
-            <span>
-              <img src={photo || cover_photo} alt="foto de capa" />
-            </span>
+    const handleBuy = () => {
+      if (!selectedSize || selectedSize === "") {
+        setHasError(true);
+        setErrorMessage("POR FAVOR, SELECIONE UM TAMANHO.");
+        return;
+      }
+      let existsInCart = false;
+      let currentQuantity = 1;
 
-            <div>
-              <MiniPhotoContainer
-                onClick={() => {
-                  setAttributes(1);
-                }}
-                selected={selected}
-              >
-                <img src={cover_photo} alt="foto de capa" />
-              </MiniPhotoContainer>
-              {photos.length > 0 &&
-                photos.map((photo, index) => (
-                  <MiniPhotoContainer
-                    key={index}
-                    onClick={() => {
-                      setAttributes(index + 2);
-                    }}
-                    selected={selected}
-                  >
-                    <img src={photo} alt={`${title} foto ${index}`} />
-                  </MiniPhotoContainer>
-                ))}
-            </div>
-          </PhotoContainer>
+      cartContext.cart.map((item) => {
+        if (item.id === id && item.size === selectedSize) {
+          updateValue();
+
+          existsInCart = true;
+        }
+      });
+
+      if (!existsInCart) {
+        const copy = [
+          ...cartContext.cart,
+          {
+            id,
+            title,
+            price: sale_price || price,
+            cover_photo,
+            quantity: currentQuantity,
+            size: selectedSize,
+            maxQuantity,
+            slug,
+          },
+        ];
+        cartContext.setCart(copy);
+        localStorage.setItem("cart", JSON.stringify(copy));
+        notify("Produto adicionado ao carrinho!");
+      }
+    };
+
+    const setAttributes = (value) => {
+      setSelected(value);
+      if (value > 0) {
+        setPhoto(value === 1 ? cover_photo : photos[value - 2]);
+      }
+    };
+
+    const setSize = (value) => {
+      setSelectedSize(value.size.toUpperCase());
+      setMaxQuantity(value.quantity);
+      setHasError(false);
+    };
+
+    return (
+      <Layout>
+        <SEO title={title} />
+        <ToastContainer />
+        <Container>
           <div>
-            <InfoContainer>
-              <p>{brand}</p>
-              <strong>{title.toUpperCase()}</strong>
-              <SaleContainer hasSale={sale_price !== ""}>
-                <strong>R$ {price}</strong>
-                <span>R$ {sale_price}</span>
-              </SaleContainer>
+            <PhotoContainer>
+              <span>
+                <img src={photo || cover_photo} alt="foto de capa" />
+              </span>
 
-              <span>Tamanho: {selectedSize && <b>{selectedSize}</b>}</span>
               <div>
-                {sizes.map((size, index) => (
-                  <SizeBox
-                    key={index}
-                    onClick={() => setSize(size.toUpperCase())}
-                    isSelected={selectedSize === size.toUpperCase()}
-                  >
-                    {size.toUpperCase()}
-                  </SizeBox>
-                ))}
+                <MiniPhotoContainer
+                  onClick={() => {
+                    setAttributes(1);
+                  }}
+                  selected={selected}
+                >
+                  <img src={cover_photo} alt="foto de capa" />
+                </MiniPhotoContainer>
+                {photos.length > 0 &&
+                  photos.map((photo, index) => (
+                    <MiniPhotoContainer
+                      key={index}
+                      onClick={() => {
+                        setAttributes(index + 2);
+                      }}
+                      selected={selected}
+                    >
+                      <img src={photo} alt={`${title} foto ${index}`} />
+                    </MiniPhotoContainer>
+                  ))}
               </div>
-              <label>PEÇAS RESTANTES: {quantity}</label>
-            </InfoContainer>
-            {hasError && <span>{errorMessage}</span>}
-            <Button title="COMPRAR" color={Colors.blue_01} action={handleBuy} />
+            </PhotoContainer>
+            <div>
+              <InfoContainer>
+                <p>{brand}</p>
+                <strong>{title.toUpperCase()}</strong>
+                <SaleContainer hasSale={sale_price !== ""}>
+                  <strong>R$ {price}</strong>
+                  <span>R$ {sale_price}</span>
+                </SaleContainer>
+
+                <span>Tamanho: {selectedSize && <b>{selectedSize}</b>}</span>
+                <div>
+                  {items.map((item, index) => (
+                    <SizeBox
+                      key={index}
+                      onClick={() => setSize(item)}
+                      isSelected={selectedSize === item.size.toUpperCase()}
+                    >
+                      {item.size.toUpperCase()}
+                    </SizeBox>
+                  ))}
+                </div>
+                {maxQuantity > 0 && (
+                  <label>PEÇAS RESTANTES: {maxQuantity}</label>
+                )}
+              </InfoContainer>
+              {hasError && <span>{errorMessage}</span>}
+              <Button
+                title="COMPRAR"
+                color={Colors.blue_01}
+                action={handleBuy}
+              />
+            </div>
           </div>
-        </div>
-        <Accordion title="DETALHES" content={description} />
-        <Carroussel category={category_id} title="PRODUTOS SIMILARES" />
-      </Container>
-    </Layout>
-  );
-};
+          <Accordion title="DETALHES" content={description} />
+          <Carroussel category={category_id} title="PRODUTOS SIMILARES" />
+        </Container>
+      </Layout>
+    );
+  }
+);
 
 export default Product;
 
@@ -262,6 +283,8 @@ export const getStaticProps: GetStaticProps<ProductProps> = async (context) => {
 
   const products: ProductProps = data[0];
 
+  console.log(products);
+
   return {
     props: {
       id: products.id,
@@ -271,7 +294,7 @@ export const getStaticProps: GetStaticProps<ProductProps> = async (context) => {
       brand: products.brand,
       price: products.price,
       sale_price: products.sale_price,
-      sizes: products.sizes,
+      items: products.items,
       category_id: products.category_id,
       slug: products.slug,
       quantity: products.quantity,
