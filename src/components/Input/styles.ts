@@ -19,7 +19,7 @@ export const Container = styled.div<IContainerProps>`
 
   span {
     display: flex;
-    align-items: end;
+    align-items: flex-end;
 
     position: absolute;
     transform: translate(6px, 44px) scale(1);
@@ -66,11 +66,11 @@ export const Container = styled.div<IContainerProps>`
       background-color: inherit;
 
       width: 100%;
-      height: 100%;
+      height: 18px;
 
       ::placeholder {
         font-size: 16px;
-        line-height: 1.5;
+        z-index: 1;
       }
     }
 
