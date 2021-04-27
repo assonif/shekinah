@@ -56,7 +56,7 @@ const Categories = ({ products, category }: CategoryProps) => {
           }
         })}
         {products.map((product) => {
-          if (product.quantity === 0) {
+          if (product.quantity > 0) {
             return (
               <ProductCard
                 key={product.id}
@@ -66,7 +66,66 @@ const Categories = ({ products, category }: CategoryProps) => {
                 slug={product.slug}
                 sale_price={product.sale_price}
                 title={product.title}
-                unavailable
+              />
+            );
+          }
+        })}
+        {products.map((product) => {
+          if (product.quantity > 0) {
+            return (
+              <ProductCard
+                key={product.id}
+                cover_photo={product.cover_photo}
+                price={product.price}
+                photos={product.photos}
+                slug={product.slug}
+                sale_price={product.sale_price}
+                title={product.title}
+              />
+            );
+          }
+        })}
+        {products.map((product) => {
+          if (product.quantity > 0) {
+            return (
+              <ProductCard
+                key={product.id}
+                cover_photo={product.cover_photo}
+                price={product.price}
+                photos={product.photos}
+                slug={product.slug}
+                sale_price={product.sale_price}
+                title={product.title}
+              />
+            );
+          }
+        })}
+        {products.map((product) => {
+          if (product.quantity > 0) {
+            return (
+              <ProductCard
+                key={product.id}
+                cover_photo={product.cover_photo}
+                price={product.price}
+                photos={product.photos}
+                slug={product.slug}
+                sale_price={product.sale_price}
+                title={product.title}
+              />
+            );
+          }
+        })}
+        {products.map((product) => {
+          if (product.quantity > 0) {
+            return (
+              <ProductCard
+                key={product.id}
+                cover_photo={product.cover_photo}
+                price={product.price}
+                photos={product.photos}
+                slug={product.slug}
+                sale_price={product.sale_price}
+                title={product.title}
               />
             );
           }

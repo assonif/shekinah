@@ -49,6 +49,7 @@ export default function Carroussel({ title, category }: CarrousselProps) {
               slug={product.slug}
               sale_price={product.sale_price}
               title={product.title}
+              isRelatedProducts
             />
           );
         })}

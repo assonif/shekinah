@@ -59,7 +59,11 @@ export const Container = styled.div<ContainerProps>`
   }
 `;
 
-export const SaleInfo = styled.span`
+interface SaleInfoProps {
+  isRelatedProducts: boolean;
+}
+
+export const SaleInfo = styled.span<SaleInfoProps>`
   display: block;
   position: absolute;
   padding: 0.2rem 0.5rem;
@@ -74,6 +78,13 @@ export const SaleInfo = styled.span`
   @media (min-width: 768px) {
     margin-top: 1rem;
     margin-left: 16rem;
+
+    ${(props) =>
+      props.isRelatedProducts &&
+      css`
+        margin-top: 1rem;
+        margin-left: 13.5rem;
+      `}
   }
 `;
 

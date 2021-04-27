@@ -11,6 +11,7 @@ interface IProduct {
   sale_price: string;
   slug: string;
   unavailable?: boolean;
+  isRelatedProducts?: boolean;
 }
 
 export default function ProductCard({
@@ -21,6 +22,7 @@ export default function ProductCard({
   slug,
   title,
   unavailable,
+  isRelatedProducts = false,
 }: IProduct) {
   const [photo, setPhoto] = useState("");
   const [discount, setdiscount] = useState("");
@@ -45,7 +47,11 @@ export default function ProductCard({
     >
       <Link href={`/catalog/products/${slug}`}>
         <a>
-          {discount && !unavailable && <SaleInfo>{discount}%</SaleInfo>}
+          {discount && !unavailable && (
+            <SaleInfo isRelatedProducts={isRelatedProducts}>
+              {discount}%
+            </SaleInfo>
+          )}
           <div>
             <img src={photo} alt={slug} />
           </div>

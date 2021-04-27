@@ -21,13 +21,14 @@ const Cart = observer(() => {
 
   useEffect(() => {}, []);
 
-  const updateAction = (id, value) => {
+  const updateAction = (id, value, size) => {
     const copy = [...cartContext.cart];
     let index;
     let copyItem;
 
     copy.forEach((item, i) => {
-      if (item.id === id) {
+      console.log(item);
+      if (item.id === id && item.size === size) {
         index = i;
         copyItem = item;
       }
@@ -76,9 +77,9 @@ const Cart = observer(() => {
       {cartContext.cart.length > 0 && (
         <Container>
           <ul>
-            {cartContext.cart.map((item) => (
+            {cartContext.cart.map((item, index) => (
               <CartItem
-                key={item.id}
+                key={index}
                 id={item.id}
                 size={item.size}
                 cover_photo={item.cover_photo}
@@ -87,7 +88,7 @@ const Cart = observer(() => {
                 quantity={item.quantity}
                 maxQuantity={item.maxQuantity}
                 removeAction={() => removeAction(item.id, item.size)}
-                updateAction={(id, value) => updateAction(id, value)}
+                updateAction={(id, value) => updateAction(id, value, item.size)}
                 slug={item.slug}
               />
             ))}

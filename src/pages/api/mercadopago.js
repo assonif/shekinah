@@ -10,9 +10,9 @@ export default async (req, res) => {
   let preference = {
     items: [],
     back_urls: {
-      success: "http://localhost:3000/payment",
-      failure: "http://localhost:3000/",
-      pending: "http://localhost:3000/payment",
+      success: "https://shekinahstore.vercel.app/payment",
+      failure: "https://shekinahstore.vercel.app/",
+      pending: "https://shekinahstore.vercel.app/payment",
     },
     auto_return: "approved",
     payer: {

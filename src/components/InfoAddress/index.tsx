@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import Input from "../Input";
 import Button from "../Button";
 import Dropdown from "../Dropdown";
@@ -228,6 +230,13 @@ const InfoAddress = observer(
               </strong>
             </Security>
           )}
+
+          <Link href="/cart">
+            <a>
+              <img src="/left-arrow.svg" alt="Voltar ao carrinho" /> Voltar ao
+              carrinho
+            </a>
+          </Link>
         </Form>
       </Container>
     );

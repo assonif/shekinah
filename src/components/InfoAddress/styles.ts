@@ -47,6 +47,21 @@ export const Container = styled.div`
     #loader {
       margin-top: 1rem;
     }
+
+    a {
+      display: flex;
+      align-items: center;
+      margin-top: 1.5rem;
+
+      color: ${Colors.neutral_color_09};
+
+      border-bottom: 1px solid ${Colors.neutral_color_09};
+
+      img {
+        height: 1.2rem;
+        margin-right: 0.5rem;
+      }
+    }
   }
 `;
 
@@ -68,8 +83,7 @@ export const Security = styled.div`
     font-size: 0.9rem;
     font-weight: normal;
     > svg {
-      margin-right: 0.3rem;
-      font-size: 1.2rem;
+      font-size: 1rem;
     }
 
     > b {

@@ -276,6 +276,7 @@ export const getStaticProps: GetStaticProps<ProductProps> = async (context) => {
     .catch((e) => (error = e));
 
   const products: ProductProps = data[0];
+  console.log(products);
 
   return {
     props: {
