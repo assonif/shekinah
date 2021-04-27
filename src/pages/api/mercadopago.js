@@ -10,9 +10,9 @@ export default async (req, res) => {
   let preference = {
     items: [],
     back_urls: {
-      success: "http://localhost:3000/",
+      success: "http://localhost:3000/payment",
       failure: "http://localhost:3000/",
-      pending: "http://localhost:3000/",
+      pending: "http://localhost:3000/payment",
     },
     auto_return: "approved",
     payer: {

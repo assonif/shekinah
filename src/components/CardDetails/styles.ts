@@ -48,6 +48,7 @@ export const Container = styled.div<IContainerProps>`
 
     > img {
       width: 50%;
+      max-width: 10rem;
     }
   }
 `;

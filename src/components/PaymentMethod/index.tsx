@@ -32,12 +32,9 @@ export default function PaymentMethod({
 
     if (name === "number") {
       newValue = value.replace(/[^\d\s]/g, "");
-      console.log(newValue);
       newValue = newValue.replace(" ", "");
       newValue = newValue.replace(" ", "");
       newValue = newValue.replace(" ", "");
-
-      console.log(newValue);
 
       if (newValue.length >= 5) {
         newValue = newValue.substring(0, 4) + " " + newValue.substring(4);

@@ -63,12 +63,19 @@ const checkout = observer(() => {
     });
 
     setItemDetails(filtered);
+  }, [cartContext.cart]);
+
+  useEffect(() => {
+    if (cartContext.cart.length === 0) {
+      var storedArray = localStorage.getItem("cart");
+      cartContext.setCart(JSON.parse(storedArray));
+    }
   }, []);
 
   return (
     <>
       <SEO title="Carrinho" />
-      {/* <CardDetails total={totals.total} items={itemsDetails} /> */}
+      <CardDetails total={orderContext.subtotal} items={itemsDetails} />
       <Container>
         {checkoutStep === 0 && (
           <InfoAddress

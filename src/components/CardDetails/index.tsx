@@ -17,7 +17,7 @@ interface IProduct {
 
 interface ICardDetailsProps {
   items: Array<IProduct>;
-  total: string;
+  total: number;
 }
 
 export default function CardDetails({ total, items }: ICardDetailsProps) {

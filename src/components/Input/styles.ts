@@ -16,7 +16,6 @@ export const Container = styled.div<IContainerProps>`
   margin-bottom: ${(props) => (props.error ? "1.3rem" : "1rem")};
 
   width: ${(props) => (props.width > 0 ? props.width : 100)}%;
-
   span {
     display: flex;
     align-items: flex-end;
@@ -69,8 +68,7 @@ export const Container = styled.div<IContainerProps>`
       height: 18px;
 
       ::placeholder {
-        font-size: 16px;
-        z-index: 1;
+        font-size: 12px;
       }
     }
 

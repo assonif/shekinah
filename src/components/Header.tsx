@@ -12,10 +12,11 @@ import SearchBar from "./SearchBar";
 import { Container, ActionsMenu } from "@/styles/components/Header";
 import { cartStore } from "@/stores/cart";
 
-const Header = observer(() => {
+const Header = observer(({ shouldCancelLocalStorage }) => {
   const cartContext = useContext(cartStore);
 
   useEffect(() => {
+    if (shouldCancelLocalStorage) return;
     var storedArray = localStorage.getItem("cart");
     cartContext.setCart(JSON.parse(storedArray));
   }, []);

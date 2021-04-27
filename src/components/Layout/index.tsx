@@ -11,10 +11,11 @@ export default function Layout({
   children,
   title = "",
   noFooter = false,
+  shouldCancelLocalStorage = false,
 }) {
   return (
     <div>
-      <Header />
+      <Header shouldCancelLocalStorage />
       <Section>
         {!noCategories && <Categories />}
         {title && <PageTitle title={title} />}

@@ -71,10 +71,6 @@ const Product = observer(
       return <LoadingPage />;
     }
 
-    useEffect(() => {
-      console.log(quantity);
-    }, [quantity]);
-
     const notify = (value) =>
       toast.success(value, {
         position: "top-right",
@@ -87,7 +83,6 @@ const Product = observer(
       });
 
     const checkQuantity = (value) => {
-      console.log(value, quantity);
       if (value > maxQuantity) {
         return false;
       }
@@ -106,7 +101,6 @@ const Product = observer(
         }
       });
 
-      console.log(copyItem);
       if (!checkQuantity(copyItem.quantity + 1)) {
         setHasError(true);
         setErrorMessage("VOCÊ JÁ ADICIONOU TODO NOSSO ESTOQUE EM SEU CARRINHO");
@@ -282,8 +276,6 @@ export const getStaticProps: GetStaticProps<ProductProps> = async (context) => {
     .catch((e) => (error = e));
 
   const products: ProductProps = data[0];
-
-  console.log(products);
 
   return {
     props: {

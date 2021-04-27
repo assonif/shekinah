@@ -50,8 +50,6 @@ export default class OrderStore {
 
   setAddress(value) {
     this.receiver_address = value;
-
-    console.log(this.receiver_address);
   }
 
   setPayer(value) {
@@ -83,7 +81,5 @@ export default class OrderStore {
         receiver_address: toJS(this.receiver_address),
       },
     };
-
-    console.log(this.finalOrder);
   }
 }

@@ -7,16 +7,19 @@ import { orderStore } from "@/stores/order";
 
 import { Form } from "@unform/web";
 
+import { FcLock } from "react-icons/fc";
+
 import Validator, { addressSchema } from "@/schemas";
 
 import axios from "axios";
 
 import { ToastContainer, toast } from "react-toastify";
 
-import { Container } from "./styles";
+import { Container, Security } from "./styles";
 import Colors from "@/styles/Colors";
 import { useContext, useRef, useState } from "react";
 import { observer } from "mobx-react";
+import CircularLoader from "../CircularLoader";
 
 interface IInfoAddressProps {
   setCheckoutStep: any;
@@ -34,7 +37,6 @@ const InfoAddress = observer(
     setPayer,
     payer,
   }: IInfoAddressProps) => {
-    const [hasMercadoPagoCTA, setHasMercadoPagoCTA] = useState(false);
     const formRef = useRef(null);
 
     const cartContext = useContext(cartStore);
@@ -47,10 +49,13 @@ const InfoAddress = observer(
       formRef.current.setErrors({});
 
       try {
-        // await Validator(addressSchema, address);
+        cartContext.setHasGatewayButton(false);
+        cartContext.setIsLoading();
 
         await handleClickCheckout();
-        // setCheckoutStep(1);
+
+        cartContext.setIsLoading();
+        cartContext.setHasGatewayButton(true);
       } catch (err) {
         const validationErrors = {};
 
@@ -66,7 +71,6 @@ const InfoAddress = observer(
         const { data } = await axios.post("/api/mercadopago", {
           data: cartContext.cart,
         });
-        console.log(data);
         var script = document.createElement("script");
 
         // The source domain must be completed according to the site for which you are integrating.
@@ -197,7 +201,7 @@ const InfoAddress = observer(
             ]}
           />
 
-          {!hasMercadoPagoCTA && (
+          {!cartContext.isLoading && !cartContext.hasGatewayButton && (
             <Button
               color={Colors.blue_01}
               title="Escolher meio de pagamento"
@@ -208,7 +212,22 @@ const InfoAddress = observer(
             />
           )}
 
+          {cartContext.isLoading && !cartContext.hasGatewayButton && (
+            <CircularLoader />
+          )}
+
           <div id="button-checkout" />
+          {cartContext.hasGatewayButton && (
+            <Security>
+              <strong>
+                <FcLock />
+                <b>PARA A SUA SEGURANÇA</b>.
+              </strong>
+              <strong>
+                Você será redirecionado ao <b>MercadoPago</b>
+              </strong>
+            </Security>
+          )}
         </Form>
       </Container>
     );
