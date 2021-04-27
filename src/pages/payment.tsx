@@ -40,7 +40,7 @@ const Payment: React.FC = () => {
               </span>
             }
             title="Você está quase lá!"
-            image="https://www.flaticon.com/svg/vstatic/svg/2972/2972543.svg?token=exp=1619481576~hmac=c295aa340ea868ea4e834ae1be448fbc"
+            image="/pending.svg"
           />
         )}
         {router.query.status === "approved" && (
@@ -54,7 +54,7 @@ const Payment: React.FC = () => {
               </span>
             }
             title="Seu pagamento foi aprovado"
-            image="https://www.flaticon.com/svg/vstatic/svg/3699/3699516.svg?token=exp=1619481506~hmac=cf3c0cc98208fba11861a26d41a28826"
+            image="/checked.svg"
           />
         )}
       </Container>

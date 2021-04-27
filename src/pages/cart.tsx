@@ -103,7 +103,7 @@ const Cart = observer(() => {
         <PaymentSummary
           route="/"
           button="Voltar às compras"
-          image="https://www.flaticon.com/svg/vstatic/svg/2038/2038854.svg?token=exp=1619534171~hmac=aefcc1b40a97446adee3e844dd5d8542"
+          image="/empty-cart.svg"
           title="Ops! Seu carrinho está vázio."
           message={
             <span>
