@@ -16,7 +16,6 @@ const Header = observer(({ shouldCancelLocalStorage }) => {
   const cartContext = useContext(cartStore);
 
   useEffect(() => {
-    if (shouldCancelLocalStorage) return;
     var storedArray = localStorage.getItem("cart");
     cartContext.setCart(JSON.parse(storedArray));
   }, []);
