@@ -31,6 +31,8 @@ const Payment: React.FC = () => {
         {(router.query.status === "pending" ||
           router.query.status === "in_process") && (
           <PaymentSummary
+            button="Acompanhar meu pedido"
+            route="/orders"
             message={
               <span>
                 Assim que o pagamento for aprovado, o pedido:{" "}
@@ -43,6 +45,8 @@ const Payment: React.FC = () => {
         )}
         {router.query.status === "approved" && (
           <PaymentSummary
+            button="Acompanhar meu pedido"
+            route="/orders"
             message={
               <span>
                 Seu pedido: <b>{router.query.payment_id}</b> está sendo

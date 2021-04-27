@@ -2,9 +2,13 @@ import React from "react";
 
 import { Container } from "./styles";
 
-const CircularLoader: React.FC = () => {
+interface ICircularLoaderProps {
+  color?: string;
+}
+
+const CircularLoader = ({ color }: ICircularLoaderProps) => {
   return (
-    <Container id="loader">
+    <Container color={color} id="loader">
       <div></div>
       <div></div>
       <div></div>

@@ -9,6 +9,7 @@ export const Container = styled.div`
   padding-top: 2rem;
   > img {
     width: 50%;
+    max-width: 12rem;
 
     margin-bottom: 1rem;
   }
@@ -29,5 +30,11 @@ export const Container = styled.div`
     > b {
       font-size: 1rem;
     }
+  }
+
+  a {
+    width: 100%;
+
+    max-width: 20rem;
   }
 `;

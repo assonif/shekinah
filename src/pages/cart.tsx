@@ -14,6 +14,7 @@ import { cartStore } from "@/stores/cart";
 import { orderStore } from "@/stores/order";
 
 import { Container } from "@/styles/pages/Cart";
+import PaymentSummary from "@/components/PaymentSummary";
 const Cart = observer(() => {
   const cartContext = useContext(cartStore);
   const orderContext = useContext(orderStore);
@@ -72,30 +73,46 @@ const Cart = observer(() => {
   return (
     <Layout title="Carrinho">
       <SEO title="Carrinho" />
-      <Container>
-        <ul>
-          {cartContext.cart.map((item) => (
-            <CartItem
-              key={item.id}
-              id={item.id}
-              size={item.size}
-              cover_photo={item.cover_photo}
-              title={item.title}
-              price={item.price}
-              quantity={item.quantity}
-              maxQuantity={item.maxQuantity}
-              removeAction={() => removeAction(item.id, item.size)}
-              updateAction={(id, value) => updateAction(id, value)}
-              slug={item.slug}
-            />
-          ))}
-        </ul>
+      {cartContext.cart.length > 0 && (
+        <Container>
+          <ul>
+            {cartContext.cart.map((item) => (
+              <CartItem
+                key={item.id}
+                id={item.id}
+                size={item.size}
+                cover_photo={item.cover_photo}
+                title={item.title}
+                price={item.price}
+                quantity={item.quantity}
+                maxQuantity={item.maxQuantity}
+                removeAction={() => removeAction(item.id, item.size)}
+                updateAction={(id, value) => updateAction(id, value)}
+                slug={item.slug}
+              />
+            ))}
+          </ul>
 
-        <div>
-          <SubTotal value={orderContext.subtotal} />
-          <Shipping />
-        </div>
-      </Container>
+          <div>
+            <SubTotal value={orderContext.subtotal} />
+            <Shipping />
+          </div>
+        </Container>
+      )}
+      {cartContext.cart.length === 0 && (
+        <PaymentSummary
+          route="/"
+          button="Voltar às compras"
+          image="https://www.flaticon.com/svg/vstatic/svg/2038/2038854.svg?token=exp=1619534171~hmac=aefcc1b40a97446adee3e844dd5d8542"
+          title="Ops! Seu carrinho está vázio."
+          message={
+            <span>
+              Você precisa adicionar algum produto{" "}
+              <span>ao seu carrinho para continuar a compra!</span>
+            </span>
+          }
+        />
+      )}
     </Layout>
   );
 });

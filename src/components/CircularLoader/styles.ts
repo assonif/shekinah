@@ -1,7 +1,11 @@
 import Colors from "@/styles/Colors";
 import styled from "styled-components";
 
-export const Container = styled.div`
+interface ICircularLoaderProps {
+  color?: string;
+}
+
+export const Container = styled.div<ICircularLoaderProps>`
   display: inline-block;
   position: relative;
   width: 80px;
@@ -13,7 +17,7 @@ export const Container = styled.div`
     border-radius: 5px;
     left: 8px;
     width: 12px;
-    background: ${Colors.blue_01};
+    background: ${(props) => (props.color ? props.color : Colors.blue_01)};
     animation: lds-facebook 0.8s cubic-bezier(0, 0.5, 0.5, 1) infinite;
   }
   div:nth-child(1) {
