@@ -30,6 +30,8 @@ export default function ProductCard({
   useEffect(() => {
     setPhoto(cover_photo);
 
+    console.log(cover_photo);
+
     if (sale_price) {
       setdiscount(
         (100 - (parseFloat(sale_price) * 100) / parseFloat(price)).toFixed(0)

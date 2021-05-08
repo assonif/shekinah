@@ -41,82 +41,20 @@ const Categories = ({ products, category }: CategoryProps) => {
       <SEO title={category.title} />
       <Container>
         {products.map((product) => {
-          if (product.quantity > 0) {
-            return (
-              <ProductCard
-                key={product.id}
-                cover_photo={product.cover_photo}
-                price={product.price}
-                photos={product.photos}
-                slug={product.slug}
-                sale_price={product.sale_price}
-                title={product.title}
-              />
-            );
-          }
+          return (
+            <ProductCard
+              key={product.id}
+              cover_photo={product.cover_photo}
+              price={product.price}
+              photos={product.photos}
+              slug={product.slug}
+              sale_price={product.sale_price}
+              title={product.title}
+            />
+          );
         })}
         {products.map((product) => {
-          if (product.quantity > 0) {
-            return (
-              <ProductCard
-                key={product.id}
-                cover_photo={product.cover_photo}
-                price={product.price}
-                photos={product.photos}
-                slug={product.slug}
-                sale_price={product.sale_price}
-                title={product.title}
-              />
-            );
-          }
-        })}
-        {products.map((product) => {
-          if (product.quantity > 0) {
-            return (
-              <ProductCard
-                key={product.id}
-                cover_photo={product.cover_photo}
-                price={product.price}
-                photos={product.photos}
-                slug={product.slug}
-                sale_price={product.sale_price}
-                title={product.title}
-              />
-            );
-          }
-        })}
-        {products.map((product) => {
-          if (product.quantity > 0) {
-            return (
-              <ProductCard
-                key={product.id}
-                cover_photo={product.cover_photo}
-                price={product.price}
-                photos={product.photos}
-                slug={product.slug}
-                sale_price={product.sale_price}
-                title={product.title}
-              />
-            );
-          }
-        })}
-        {products.map((product) => {
-          if (product.quantity > 0) {
-            return (
-              <ProductCard
-                key={product.id}
-                cover_photo={product.cover_photo}
-                price={product.price}
-                photos={product.photos}
-                slug={product.slug}
-                sale_price={product.sale_price}
-                title={product.title}
-              />
-            );
-          }
-        })}
-        {products.map((product) => {
-          if (product.quantity > 0) {
+          if (product.quantity === 0) {
             return (
               <ProductCard
                 key={product.id}
@@ -153,6 +91,8 @@ export const getStaticProps: GetStaticProps<CategoryProps> = async (
   let categories = [];
   let error = {};
 
+  console.log("1");
+
   await db
     .collection("Products")
     .where("category_id", "==", slug)
@@ -165,6 +105,7 @@ export const getStaticProps: GetStaticProps<CategoryProps> = async (
     .catch((e) => (error = e));
 
   const products = data;
+  console.log(products);
 
   await db
     .collection("Categories")
@@ -178,6 +119,8 @@ export const getStaticProps: GetStaticProps<CategoryProps> = async (
     .catch((e) => (error = e));
 
   const category = categories;
+
+  console.log(category);
 
   return {
     props: {
