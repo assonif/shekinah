@@ -10,26 +10,24 @@ import { Container } from "./styles";
 import { cartStore } from "@/stores/cart";
 
 interface ISubTotalProps {
-  value: number;
+	value: number;
 }
 
 export default function SubTotal({ value }: ISubTotalProps) {
-  const cartContext = useContext(cartStore);
+	return (
+		<Container>
+			<span>SUBTOTAL</span>
+			<strong>R$ {value.toFixed(2).toString()}</strong>
 
-  return (
-    <Container>
-      <span>SUBTOTAL</span>
-      <strong>R$ {value.toFixed(2).toString()}</strong>
-
-      <Link href="/checkout">
-        <a>
-          <Button
-            color={Colors.green_01}
-            title="FINALIZAR COMPRA"
-            action={() => {}}
-          />
-        </a>
-      </Link>
-    </Container>
-  );
+			<Link href="/checkout">
+				<a>
+					<Button
+						color={Colors.green_01}
+						title="FINALIZAR COMPRA"
+						action={() => {}}
+					/>
+				</a>
+			</Link>
+		</Container>
+	);
 }
