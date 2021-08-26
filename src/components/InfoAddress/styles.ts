@@ -1,7 +1,11 @@
 import Colors from "@/styles/Colors";
 import styled from "styled-components";
 
-export const Container = styled.div`
+interface IContainerProps {
+  hasGatewayButton: boolean;
+}
+
+export const Container = styled.div<IContainerProps>`
   width: 100%;
   > form {
     display: flex;
@@ -26,6 +30,7 @@ export const Container = styled.div`
     }
 
     #button-checkout {
+      display: ${(props) => (props.hasGatewayButton ? "initial" : "none")};
       width: 100%;
       > button {
         background: ${Colors.green_01};

@@ -15,7 +15,7 @@ export default createGlobalStyle`
 }
 
 body {
-    background:${color.neutral_color_01};;
+    background:${color.neutral_color_01};
     color:${color.neutral_color_09};
     font-family: Arial, Helvetica, sans-serif;
 }

@@ -31,6 +31,7 @@ export default function CategoriesBar() {
 
     await db
       .collection("Categories")
+      .orderBy("id", "asc")
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {

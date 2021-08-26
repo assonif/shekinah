@@ -91,8 +91,6 @@ export const getStaticProps: GetStaticProps<CategoryProps> = async (
   let categories = [];
   let error = {};
 
-  console.log("1");
-
   await db
     .collection("Products")
     .where("category_id", "==", slug)

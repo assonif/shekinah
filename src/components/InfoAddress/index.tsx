@@ -45,7 +45,6 @@ const InfoAddress = observer(
     const orderContext = useContext(orderStore);
 
     const handleSubmitButton = async (e) => {
-      e.preventDefault();
       orderContext.setPayerAddress();
       orderContext.consolidateOrder();
       formRef.current.setErrors({});
@@ -88,11 +87,13 @@ const InfoAddress = observer(
 
     const handleSetAddress = (event) => {
       const { name, value } = event.target;
+      cartContext.setHasGatewayButton(false);
       setAddress(name, value);
     };
 
     const handleSetPayer = (event) => {
       const { name, value } = event.target;
+      cartContext.setHasGatewayButton(false);
       setPayer(name, value);
     };
 
@@ -101,7 +102,7 @@ const InfoAddress = observer(
     };
 
     return (
-      <Container>
+      <Container hasGatewayButton={cartContext.hasGatewayButton}>
         <Form ref={formRef} onSubmit={handleSubmitButton}>
           <strong>Para onde enviamos?</strong>
           <Input

@@ -38,8 +38,8 @@ export const Container = styled.div<ContainerProps>`
   }
 
   > a > div > img {
-    width: 100%;
-    max-height: 30rem;
+    max-width: 100%;
+    max-height: 100%;
   }
 
   @media (min-width: 768px) {

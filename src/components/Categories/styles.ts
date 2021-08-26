@@ -9,6 +9,7 @@ export const ItemContainer = styled.li`
   background: red;
 
   margin-left: 1rem;
+  margin-bottom: 1rem;
 
   cursor: pointer;
 
@@ -18,10 +19,12 @@ export const ItemContainer = styled.li`
 
   font-weight: 600;
 
+  white-space: nowrap;
+
   transition: border-radius 0.4s ease-out, background 0.4s;
 
   &:first-child {
-    background: ${color.green_01};
+    background: transparent;
     margin-left: 0;
 
     > a {
@@ -69,8 +72,6 @@ export const BarContainer = styled.nav`
 
   > ul {
     display: flex;
-
-    overflow-x: auto;
   }
 
   @media (max-width: 768px) {
@@ -78,11 +79,24 @@ export const BarContainer = styled.nav`
       width: 0px;
       background: transparent;
     }
+
+    > ul {
+      overflow-x: auto;
+    }
   }
 
   @media (min-width: 768px) {
     & {
-      margin: 2rem auto 1.5rem;
+      margin: 2rem auto 0px;
+    }
+
+    > ul {
+      align-items: center;
+      justify-content: center;
+      flex-direction: row;
+      flex-wrap: wrap;
+
+      max-width: 100%;
     }
   }
 `;
